@@ -1,6 +1,9 @@
 <template>
-  <div class="name">{{ name }}</div>
-  <button v-on:click="updateName" class="btn btn-primary">
+  <!-- v-bind:type == :type  -->
+  <!-- v-on:click == @click -->
+  <div :class="nameClass">{{ name }}</div>
+  <input :type="type" v-bind:value="name" />
+  <button @click="updateName" class="btn btn-primary">
     Click
   </button>
 </template>
@@ -12,26 +15,21 @@ import { ref } from 'vue';
 
 export default {
   setup() {
-    // const name2 = reactive({
-    //   id: 1,
-    // });
-    const name = ref({
-      id: 1,
-    });
+    const name = ref('Hello');
+    const type = ref('number');
+    const nameClass = ref('');
 
-    // const greeting = (name) => {
-    //   return `Hello ${name}`;
-    // };
-
-    // const greet = greeting(name);
     const updateName = () => {
-      name.value.id = 2;
-      console.log(name);
+      name.value = 'World';
+      type.value = 'text';
+      nameClass.value = 'name';
     };
 
     return {
       name,
       updateName,
+      type,
+      nameClass,
     };
   },
 };
