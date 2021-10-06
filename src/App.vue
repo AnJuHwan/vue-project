@@ -1,11 +1,28 @@
 <template>
-  <!-- v-bind:type == :type  -->
-  <!-- v-on:click == @click -->
-  <div :class="nameClass">{{ name }}</div>
-  <input :type="type" v-bind:value="name" />
-  <button @click="updateName" class="btn btn-primary">
-    Click
-  </button>
+  <div class="container">
+    <h2>To-Do List</h2>
+    <form @submit.prevent="onSubmit" class="d-flex">
+      <div class="flex-grow-1 me-2">
+        <input
+          class="form-control "
+          type="text"
+          v-model="todo"
+          placeholder="Type new to-do"
+        />
+      </div>
+      <div class="ml-2">
+        <button type="submit" class="btn btn-primary">
+          Add
+        </button>
+      </div>
+    </form>
+
+    <div class="card mt-2" v-for="todo in todos" :key="todo.id">
+      <div class="card-body p-2">
+        {{ todo.subject }}
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -15,21 +32,24 @@ import { ref } from 'vue';
 
 export default {
   setup() {
-    const name = ref('Hello');
-    const type = ref('number');
-    const nameClass = ref('');
+    const todo = ref('');
+    const todos = ref([
+      { id: 1, subject: '휴대폰 사기' },
+      { id: 2, subject: '장보기' },
+    ]);
 
-    const updateName = () => {
-      name.value = 'World';
-      type.value = 'text';
-      nameClass.value = 'name';
+    const onSubmit = () => {
+      todos.value.push({
+        id: Date.now(),
+        subject: todo.value,
+      });
+      todo.value = '';
     };
 
     return {
-      name,
-      updateName,
-      type,
-      nameClass,
+      todo,
+      todos,
+      onSubmit,
     };
   },
 };
