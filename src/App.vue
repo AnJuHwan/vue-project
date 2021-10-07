@@ -1,47 +1,53 @@
 <template>
   <div class="container">
     <h2>To-Do List</h2>
-    <form @submit.prevent="onSubmit">
-      <div class="d-flex">
-        <div class="flex-grow-1 me-2">
+    <TodoSimpleForm />
+
+    <div v-if="!todos.length">
+      추가된 Todo가 없습니다.
+    </div>
+
+    <div class="card mt-2" v-for="(todo, index) in todos" :key="todo.id">
+      <div class="card-body p-2 d-flex align-items-center">
+        <div class="form-check flex-grow-1">
           <input
-            class="form-control "
-            type="text"
-            v-model="todo"
-            placeholder="Type new to-do"
+            class="form-check-input"
+            type="checkbox"
+            v-model="todo.completed"
           />
+
+          <label class="form-check-label" :class="{ todo: todo.completed }">
+            <!--  -->
+            {{ todo.subject }}
+            <!--  -->
+          </label>
         </div>
-        <div class="ml-2">
-          <button type="submit" class="btn btn-primary">
-            Add
+        <div>
+          <button class="btn btn-danger btn-sm" @click="deleteTodo(index)">
+            Delete
           </button>
         </div>
-      </div>
-      <div v-show="hasError" style="color:red">This field cannot be empty</div>
-    </form>
-
-    <div class="card mt-2" v-for="todo in todos" :key="todo.id">
-      <div class="card-body p-2">
-        {{ todo.subject }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue';
 // ref : 사용시 name.value.id 으로 접근하여 object , array 접근 가능 ,
 // reactive : 직접적으로 name.id 으로 접근가능
+import { ref } from 'vue';
+import TodoSimpleForm from './components/TodoSimpleForm.vue';
 
 export default {
+  components: { TodoSimpleForm },
   setup() {
     const todo = ref('');
-    const todos = ref([
-      { id: 1, subject: '휴대폰 사기' },
-      { id: 2, subject: '장보기' },
-    ]);
-
+    const todos = ref([]);
     const hasError = ref(false);
+    const todoStyle = {
+      textDecoration: 'line-through',
+      color: 'grey',
+    };
 
     const onSubmit = () => {
       if (todo.value == '') {
@@ -50,10 +56,15 @@ export default {
         todos.value.push({
           id: Date.now(),
           subject: todo.value,
+          completed: false,
         });
-        todo.value = '';
         hasError.value = false;
+        todo.value = '';
       }
+    };
+
+    const deleteTodo = (index) => {
+      todos.value.splice(index, 1);
     };
 
     return {
@@ -61,13 +72,16 @@ export default {
       todos,
       onSubmit,
       hasError,
+      todoStyle,
+      deleteTodo,
     };
   },
 };
 </script>
 
 <style>
-.name {
-  color: red;
+.todo {
+  color: grey;
+  text-decoration: line-through;
 }
 </style>
