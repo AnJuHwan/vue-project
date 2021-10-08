@@ -1,33 +1,14 @@
 <template>
   <div class="container">
     <h2>To-Do List</h2>
-    <TodoSimpleForm />
-
+    <TodoSimpleForm @add-todo="addTodo" />
+    <TodoList
+      :todos="todos"
+      @toggle-todo="toggleTodo"
+      @delete-todo="deleteTodo"
+    />
     <div v-if="!todos.length">
       추가된 Todo가 없습니다.
-    </div>
-
-    <div class="card mt-2" v-for="(todo, index) in todos" :key="todo.id">
-      <div class="card-body p-2 d-flex align-items-center">
-        <div class="form-check flex-grow-1">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            v-model="todo.completed"
-          />
-
-          <label class="form-check-label" :class="{ todo: todo.completed }">
-            <!--  -->
-            {{ todo.subject }}
-            <!--  -->
-          </label>
-        </div>
-        <div>
-          <button class="btn btn-danger btn-sm" @click="deleteTodo(index)">
-            Delete
-          </button>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -37,30 +18,23 @@
 // reactive : 직접적으로 name.id 으로 접근가능
 import { ref } from 'vue';
 import TodoSimpleForm from './components/TodoSimpleForm.vue';
+import TodoList from './components/TodoList.vue';
 
 export default {
-  components: { TodoSimpleForm },
+  components: { TodoSimpleForm, TodoList },
   setup() {
-    const todo = ref('');
     const todos = ref([]);
-    const hasError = ref(false);
+
     const todoStyle = {
       textDecoration: 'line-through',
       color: 'grey',
     };
 
-    const onSubmit = () => {
-      if (todo.value == '') {
-        hasError.value = true;
-      } else {
-        todos.value.push({
-          id: Date.now(),
-          subject: todo.value,
-          completed: false,
-        });
-        hasError.value = false;
-        todo.value = '';
-      }
+    const addTodo = (todo) => {
+      todos.value.push(todo);
+    };
+    const toggleTodo = (index) => {
+      todos.value[index].completed = !todos.value[index].completed;
     };
 
     const deleteTodo = (index) => {
@@ -68,12 +42,11 @@ export default {
     };
 
     return {
-      todo,
       todos,
-      onSubmit,
-      hasError,
+      addTodo,
       todoStyle,
       deleteTodo,
+      toggleTodo,
     };
   },
 };
