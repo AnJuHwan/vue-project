@@ -1,34 +1,24 @@
 {
   "todos": [
     {
-      "subject": "123",
+      "subject": "qwer",
       "completed": false,
       "id": 1
     },
     {
-      "subject": "by",
+      "subject": "aaaa",
       "completed": false,
       "id": 2
     },
     {
-      "subject": "123",
+      "subject": "asdf",
       "completed": false,
       "id": 3
     },
     {
-      "subject": "za",
+      "subject": "qwerzsdf",
       "completed": false,
       "id": 4
-    },
-    {
-      "subject": "123",
-      "completed": false,
-      "id": 5
-    },
-    {
-      "subject": "aa",
-      "completed": false,
-      "id": 6
     }
   ]
 }

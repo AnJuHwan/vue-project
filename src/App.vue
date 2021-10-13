@@ -47,22 +47,34 @@ export default {
       color: 'grey',
     };
 
-    const addTodo = (todo) => {
+    const getTodos = async () => {
+      try {
+        const res = await axios.get('http://localhost:3000/todos');
+        todos.value = res.data;
+      } catch (error) {
+        console.log(error);
+        error.value = 'Something went wrong.';
+      }
+    };
+
+    getTodos();
+
+    const addTodo = async (todo) => {
       // 데이터베이스 투두를 저장
       error.value = '';
-      axios
-        .post('http://localhost:3000/todos', {
+      console.log('start');
+      try {
+        const res = await axios.post('http://localhost:3000/todos', {
           subject: todo.subject,
           completed: todo.completed,
-        })
-        .then((res) => {
-          console.log(res);
-          todos.value.push(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-          error.value = 'Something went wrong.';
         });
+        todos.value.push(res.data);
+      } catch (error) {
+        //   console.log(err);
+        error.value = 'Something went wrong.';
+      }
+
+      console.log('hello');
     };
 
     const deleteTodo = (index) => {
@@ -93,6 +105,7 @@ export default {
       searchText,
       filteredTodos,
       error,
+      getTodos,
     };
   },
 };
