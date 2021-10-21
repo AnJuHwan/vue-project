@@ -137,33 +137,18 @@
     },
     {
       "subject": "new3",
-      "completed": false,
+      "completed": true,
       "id": 31
     },
     {
       "subject": "new4",
-      "completed": false,
+      "completed": true,
       "id": 32
     },
     {
       "subject": "new5",
       "completed": false,
       "id": 33
-    },
-    {
-      "subject": "new6",
-      "completed": false,
-      "id": 34
-    },
-    {
-      "subject": "123",
-      "completed": false,
-      "id": 35
-    },
-    {
-      "subject": "4",
-      "completed": false,
-      "id": 36
     }
   ]
 }
