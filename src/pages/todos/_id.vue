@@ -26,7 +26,11 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary mt-3 ">
+    <button
+      :disabled="!todoUpdated"
+      type="submit"
+      class="btn btn-primary mt-3 "
+    >
       Save
     </button>
     <button class="btn btn-outline-dark mt-3 mx-2" @click="moveToTodoListPage">
@@ -38,20 +42,27 @@
 <script>
 import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
-import { ref } from '@vue/reactivity';
+import { computed, ref } from '@vue/reactivity';
+import _ from 'lodash';
 export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
     const todo = ref(null);
+    const originalTodo = ref(null);
     const loading = ref(true);
     const id = route.params.id;
     const getTodo = async () => {
       const res = await axios.get(`http://localhost:3000/todos/${id}`);
 
-      todo.value = res.data;
+      todo.value = { ...res.data };
+      originalTodo.value = { ...res.data };
       loading.value = false;
     };
+
+    const todoUpdated = computed(() => {
+      return !_.isEqual(todo.value, originalTodo.value);
+    });
 
     getTodo();
 
@@ -72,8 +83,8 @@ export default {
         completed: todo.value.completed,
       });
       console.log(res);
+      originalTodo.value = { ...res.data };
     };
-    console.log(route.params.id);
 
     return {
       todo,
@@ -81,6 +92,7 @@ export default {
       toggleTodoStatus,
       moveToTodoListPage,
       onSave,
+      todoUpdated,
     };
   },
 };
