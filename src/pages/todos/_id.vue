@@ -46,6 +46,8 @@ import { useRoute, useRouter } from 'vue-router';
 import { computed, ref } from '@vue/reactivity';
 import _ from 'lodash';
 import Toast from '../../components/Toast.vue';
+
+import { useToast } from '@/composables/toast.js';
 export default {
   components: {
     Toast,
@@ -57,9 +59,13 @@ export default {
     const originalTodo = ref(null);
     const loading = ref(true);
     const id = route.params.id;
-    const showToast = ref(false);
-    const toastMessage = ref('');
-    const toastAleartType = ref('');
+
+    const {
+      toastMessage,
+      toastAleartType,
+      showToast,
+      triggerToast,
+    } = useToast();
 
     const getTodo = async () => {
       try {
@@ -89,17 +95,6 @@ export default {
       router.push({
         name: 'Todos',
       });
-    };
-
-    const triggerToast = (message, type = 'success') => {
-      toastMessage.value = message;
-      toastAleartType.value = type;
-      showToast.value = true;
-      setTimeout(() => {
-        toastMessage.value = '';
-        toastAleartType.value = '';
-        showToast.value = false;
-      }, 3000);
     };
 
     const onSave = async () => {

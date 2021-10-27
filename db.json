@@ -132,7 +132,7 @@
     },
     {
       "subject": "new21asd1231",
-      "completed": false,
+      "completed": true,
       "id": 30
     },
     {
@@ -141,13 +141,8 @@
       "id": 31
     },
     {
-      "subject": "new4110",
-      "completed": true,
-      "id": 32
-    },
-    {
       "subject": "new511",
-      "completed": true,
+      "completed": false,
       "id": 33
     }
   ]
