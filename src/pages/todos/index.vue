@@ -1,6 +1,12 @@
 <template>
   <div>
-    <h2>To-Do List</h2>
+    <div class="d-flex justify-content-between mb-3">
+      <h2>To-Do List</h2>
+      <button class="btn btn-primary" @click="moveToCreatePage">
+        Create Todo
+      </button>
+    </div>
+
     <input
       class="form-control "
       type="text"
@@ -10,8 +16,6 @@
     />
 
     <hr />
-    <TodoSimpleForm @add-todo="addTodo" />
-    <div style="color:red">{{ error }}</div>
 
     <div v-if="!todos.length">
       There is nothing to display
@@ -63,14 +67,14 @@
 // reactive : 직접적으로 name.id 으로 접근가능
 // computed : 인자를 받아 올 수 없음 ,
 import { computed, ref, watch } from 'vue';
-import TodoSimpleForm from '@/components/TodoSimpleForm.vue';
 import TodoList from '@/components/TodoList.vue';
 import axios from 'axios';
 import Toast from '../../components/Toast.vue';
 import { useToast } from '@/composables/toast.js';
+import { useRouter } from 'vue-router';
 
 export default {
-  components: { TodoSimpleForm, TodoList, Toast },
+  components: { TodoList, Toast },
   setup() {
     const todos = ref([]);
     const error = ref('');
@@ -78,6 +82,7 @@ export default {
     let limit = 5;
     const currentPage = ref(1);
     const searchText = ref('');
+    const router = useRouter();
 
     const {
       toastMessage,
@@ -157,7 +162,13 @@ export default {
       }
     };
 
-    let timeout;
+    const moveToCreatePage = () => {
+      router.push({
+        name: 'TodoCreate',
+      });
+    };
+
+    let timeout = null;
 
     const searchTodo = () => {
       clearTimeout(timeout);
@@ -186,6 +197,7 @@ export default {
       toastMessage,
       toastAleartType,
       showToast,
+      moveToCreatePage,
     };
   },
 };
