@@ -6,7 +6,7 @@
         <div class="form-group mb-3">
           <label>Subject</label>
           <input v-model="todo.subject" type="text" class="form-control" />
-          <div v-if="subjectError" style="color:red">
+          <div v-if="subjectError" class="text_red">
             {{ subjectError }}
           </div>
         </div>
@@ -52,7 +52,9 @@
       Cancel
     </button>
   </form>
-  <Toast :message="toastMessage" v-if="showToast" :type="toastAleartType" />
+  <transition name="fade">
+    <Toast :message="toastMessage" v-if="showToast" :type="toastAleartType" />
+  </transition>
 </template>
 
 <script>
@@ -174,4 +176,26 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+/* scoped : 해당 컴포넌트 안에서만 사용 */
+.text_red {
+  color: red;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+  transform: translateY(0px);
+}
+</style>

@@ -4,9 +4,9 @@
       class="card-body p-2 d-flex align-items-center"
       @click="mpoveToPage(todo.id)"
     >
-      <div class="form-check flex-grow-1" style="cursor:pointer">
+      <div class="flex-grow-1" style="cursor:pointer">
         <input
-          class="form-check-input"
+          class="mx-2"
           type="checkbox"
           :checked="todo.completed"
           @change.stop="toggleTodo(index, $event)"
@@ -14,11 +14,11 @@
         />
         <!-- @click.stop="toggleTodo(index)"  대체 가능 -->
 
-        <label class="form-check-label" :class="{ todo: todo.completed }">
+        <span :class="{ todo: todo.completed }">
           <!--  -->
           {{ todo.subject }}
           <!--  -->
-        </label>
+        </span>
       </div>
       <div>
         <button class="btn btn-danger btn-sm" @click.stop="deleteTodo(index)">
